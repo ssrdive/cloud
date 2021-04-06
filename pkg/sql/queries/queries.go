@@ -35,8 +35,10 @@ const SALE_WATCHES = `
 `
 
 const SALE_ALL = `
-	SELECT S.id, S.location,S.chassis_no, S.customer_name, S.customer_address, S.customer_contact,  S.invoice_no, S.price,  S.institute, S.advance, S.date, S.sys_date, S.deleted
+	SELECT S.id, COUNT(SC.sale_id) as sale_comments,  R.name as region_name, S.date, S.sys_date,  S.chassis_no, S.customer_name, S.customer_address, S.customer_contact,  S.invoice_no, S.price,  S.institute, S.advance, S.deleted
 	FROM sale S
+	LEFT JOIN sale_comment SC ON SC.sale_id = S.id
+	LEFT JOIN region R ON S.region = R.id
 	WHERE S.deleted = 0
 	GROUP BY S.id, date, sys_date
 	ORDER BY S.id DESC, date
@@ -91,8 +93,9 @@ const SEARCH_SALEINFO = `
 	LEFT JOIN model M on S.model = M.id 
 	LEFT JOIN sale_comment SC ON SC.sale_id = S.id
 	LEFT JOIN dealer D ON S.location_fk = D.id AND S.location_fk <> 0 
-	WHERE  S.deleted = 0 AND (? IS NULL OR CONCAT(S.chassis_no) LIKE ?)
-	GROUP BY S.id, S.chassis_no, officer_name,  region_name, territory_name, S.date, S.sys_date, sd_location, S.customer_name, model_name
+	WHERE  S.deleted = 0 AND (? IS NULL OR CONCAT(S.chassis_no, U.name, R.name, T.name, S.date, S.sys_date, S.location, D.name, S.chassis_no, S.customer_name, M.name) LIKE ?)
+	GROUP BY S.id, officer_name, region_name, territory_name, date, sys_date, S.location, sd_location, S.location_fk, S.chassis_no, S.customer_name, S.customer_address, S.customer_contact, model_name
+	ORDER BY S.id DESC
 `
 
 const CLOUD_ID_INFO = `

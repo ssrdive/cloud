@@ -101,22 +101,6 @@ type UserRand struct {
 	TelePhone                 int       `json:"telephone"`
 }
 
-type AllSale struct {
-	ID              int            `json:"id"`
-	Location        sql.NullString `json:"location"`
-	ChassisNo       string         `json:"chassis_no"`
-	CustomerName    string         `json:"customer_name"`
-	CustomerAddress string         `json:"customer_address"`
-	CustomerContact string         `json:"customer_contact"`
-	InvoiceNo       sql.NullString `json:"invoice_no"`
-	Price           string         `json:"price"`
-	Institute       string         `json:"institute"`
-	Advance         string         `json:"advance"`
-	Date            time.Time      `json:"date"`
-	SysDate         time.Time      `json:"sys_date"`
-	Deleted         int            `json:"deleted"`
-}
-
 type AllSaleDummy struct {
 	ID              int            `json:"id"`
 	SaleComments    int            `json:"sale_comments"`
@@ -199,6 +183,22 @@ type CloudIdInfo struct {
 	CommissionPaidRemrks   sql.NullString `json:"commission_paid_remarks"`
 	SaleID                 string         `json:"sale_id"`
 	SaleCompletedTypeID    sql.NullString `json:"sale_completed_type_id"`
+}
+type AllSale struct {
+	ID              int            `json:"id"`
+	SaleComments    int            `json:"sale_comments"`
+	Region          string         `json:"region_name"`
+	Date            time.Time      `json:"date"`
+	SysDate         time.Time      `json:"sys_date"`
+	ChassisNo       string         `json:"chassis_no"`
+	CustomerName    string         `json:"customer_name"`
+	CustomerAddress string         `json:"customer_address"`
+	CustomerContact string         `json:"customer_contact"`
+	InvoiceNo       sql.NullString `json:"invoice_no"`
+	Price           string         `json:"price"`
+	Institute       string         `json:"institute"`
+	Advance         string         `json:"advance"`
+	Deleted         int            `json:"deleted"`
 }
 
 type SEARCHCLOUDID struct {

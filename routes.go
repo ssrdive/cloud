@@ -23,6 +23,17 @@ func (app *application) routes() http.Handler {
 	r.Handle("/item/{id}", app.validateToken(http.HandlerFunc(app.itemDetails))).Methods("GET")
 	r.Handle("/item/details/byid/{id}", app.validateToken(http.HandlerFunc(app.itemDetailsById))).Methods("GET")
 	r.Handle("/item/update/byid", app.validateToken(http.HandlerFunc(app.updateItemById))).Methods("POST")
+
+	r.Handle("/searchsaleinfo/search", app.validateToken(http.HandlerFunc(app.searchsaleinfo))).Methods("GET")
+	r.Handle("/searchchassinuminfo/search", app.validateToken(http.HandlerFunc(app.searchchassinum))).Methods("GET")
+	r.Handle("/searchcloudidinfo/search", app.validateToken(http.HandlerFunc(app.searchcloudidinfo))).Methods("GET")
+	//r.Handle("/dropdown/condition/{name}/{where}/{value}", app.validateToken(http.HandlerFunc(app.dropdownConditionHandler))).Methods("GET")
+	r.Handle("/salewatch/all", app.validateToken(http.HandlerFunc(app.allSaleWatch))).Methods("GET")
+	r.Handle("/allsales/all", app.validateToken(http.HandlerFunc(app.saleAll))).Methods("GET")
+	r.Handle("/cloudidinfor/details/{id}", app.validateToken(http.HandlerFunc(app.CloudIdInformation))).Methods("GET")
+	r.Handle("/cloudidinfor/update/byid", app.validateToken(http.HandlerFunc(app.updateCloudidInformById))).Methods("POST")
+	r.Handle("/comments/details/{id}", app.validateToken(http.HandlerFunc(app.commentsAll))).Methods("GET")
+	//r.Handle("/marksale/all", app.validateToken(http.HandlerFunc(app.markSaleCompleteAll))).Methods("GET")
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 
 	r.Handle("/businesspartner/create", app.validateToken(http.HandlerFunc(app.createBusinessPartner))).Methods("POST")

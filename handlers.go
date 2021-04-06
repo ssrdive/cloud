@@ -253,3 +253,140 @@ func (app *application) allItems(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(results)
 }
+
+func (app *application) searchsaleinfo(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+
+	results, err := app.SearchSale.Search(search)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) searchchassinum(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+
+	results, err := app.SearchChassiNum.Search(search)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) searchcloudidinfo(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+
+	results, err := app.SearchCloudID.Search(search)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) allSaleWatch(w http.ResponseWriter, r *http.Request) {
+	results, err := app.salewatch.All()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) markSaleCompleteAll(w http.ResponseWriter, r *http.Request) {
+	results, err := app.MarkSaleComplete.All()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) saleAll(w http.ResponseWriter, r *http.Request) {
+	results, err := app.allSales.All()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) commentsAll(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	if id == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.Comments.Details(id)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		fmt.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(items)
+
+}
+
+func (app *application) CloudIdInformation(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	if id == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.CloudIdInfo.Details(id)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		fmt.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(items)
+
+}
+
+func (app *application) updateCloudidInformById(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	requiredParams := []string{"id", "verified_by", "verified_on", "verified"}
+	for _, param := range requiredParams {
+		if v := r.PostForm.Get(param); v == "" {
+			fmt.Println(param)
+			app.clientError(w, http.StatusBadRequest)
+			return
+		}
+	}
+
+	id, err := app.CloudIdInfo.UpdateCloudById(r.PostForm)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	fmt.Fprintf(w, "%d", id)
+}

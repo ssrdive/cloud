@@ -12,21 +12,29 @@ import (
 )
 
 type application struct {
-	errorLog        *log.Logger
-	infoLog         *log.Logger
-	secret          []byte
-	s3id            string
-	s3secret        string
-	s3endpoint      string
-	s3region        string
-	s3bucket        string
-	rAPIKey         string
-	aAPIKey         string
-	runtimeEnv      string
-	user            *mysql.UserModel
-	dropdown        *mysql.DropdownModel
-	item            *mysql.ItemModel
-	businessPartner *mysql.BusinessPartnerModel
+	errorLog         *log.Logger
+	infoLog          *log.Logger
+	secret           []byte
+	s3id             string
+	s3secret         string
+	s3endpoint       string
+	s3region         string
+	s3bucket         string
+	rAPIKey          string
+	aAPIKey          string
+	runtimeEnv       string
+	user             *mysql.UserModel
+	dropdown         *mysql.DropdownModel
+	item             *mysql.ItemModel
+	businessPartner  *mysql.BusinessPartnerModel
+	salewatch        *mysql.SaleWatch
+	allSales         *mysql.AllSales
+	CloudIdInfo      *mysql.CloudIdInfo
+	Comments         *mysql.Comments
+	MarkSaleComplete *mysql.MarkSaleComplete
+	SearchCloudID    *mysql.SearchCloudID
+	SearchChassiNum  *mysql.SearchChassiNum
+	SearchSale       *mysql.SearchSale
 }
 
 func main() {
@@ -54,21 +62,29 @@ func main() {
 	defer db.Close()
 
 	app := &application{
-		errorLog:        errorLog,
-		infoLog:         infoLog,
-		secret:          []byte(*secret),
-		s3id:            *s3id,
-		s3secret:        *s3secret,
-		s3endpoint:      *s3endpoint,
-		s3region:        *s3region,
-		s3bucket:        *s3bucket,
-		rAPIKey:         *rAPIKey,
-		aAPIKey:         *aAPIKey,
-		runtimeEnv:      *runtimeEnv,
-		user:            &mysql.UserModel{DB: db},
-		dropdown:        &mysql.DropdownModel{DB: db},
-		item:            &mysql.ItemModel{DB: db},
-		businessPartner: &mysql.BusinessPartnerModel{DB: db},
+		errorLog:         errorLog,
+		infoLog:          infoLog,
+		secret:           []byte(*secret),
+		s3id:             *s3id,
+		s3secret:         *s3secret,
+		s3endpoint:       *s3endpoint,
+		s3region:         *s3region,
+		s3bucket:         *s3bucket,
+		rAPIKey:          *rAPIKey,
+		aAPIKey:          *aAPIKey,
+		runtimeEnv:       *runtimeEnv,
+		user:             &mysql.UserModel{DB: db},
+		dropdown:         &mysql.DropdownModel{DB: db},
+		item:             &mysql.ItemModel{DB: db},
+		businessPartner:  &mysql.BusinessPartnerModel{DB: db},
+		salewatch:        &mysql.SaleWatch{DB: db},
+		allSales:         &mysql.AllSales{DB: db},
+		CloudIdInfo:      &mysql.CloudIdInfo{DB: db},
+		Comments:         &mysql.Comments{DB: db},
+		MarkSaleComplete: &mysql.MarkSaleComplete{DB: db},
+		SearchCloudID:    &mysql.SearchCloudID{DB: db},
+		SearchChassiNum:  &mysql.SearchChassiNum{DB: db},
+		SearchSale:       &mysql.SearchSale{DB: db},
 	}
 
 	srv := &http.Server{

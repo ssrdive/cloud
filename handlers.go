@@ -253,3 +253,118 @@ func (app *application) allItems(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(results)
 }
+
+func (app *application) saleWatches(w http.ResponseWriter, r *http.Request) {
+	results, err := app.sale.All()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) saleAll(w http.ResponseWriter, r *http.Request) {
+	results, err := app.sale.SaleAll()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) saleCloudIDSearch(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+
+	results, err := app.sale.CloudIDSearch(search)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) saleChassisSearch(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+
+	results, err := app.sale.ChassisSearch(search)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) saleInfoSearch(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+
+	results, err := app.sale.InfoSearch(search)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func (app *application) saleCloudIdInformation(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	if id == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.sale.CloudIdInforDetails(id)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		fmt.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(items)
+
+}
+
+func (app *application) SaleCloudIDComments(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	if id == "" {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.sale.CloudIDCommentsDetails(id)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		fmt.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(items)
+
+}
+
+func (app *application) sysByRangeAll(w http.ResponseWriter, r *http.Request) {
+	startdate := r.URL.Query().Get("startdate")
+	enddate := r.URL.Query().Get("enddate")
+
+	results, err := app.sale.Search(startdate, enddate)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}

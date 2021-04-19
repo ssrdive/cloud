@@ -23,6 +23,16 @@ func (app *application) routes() http.Handler {
 	r.Handle("/item/{id}", app.validateToken(http.HandlerFunc(app.itemDetails))).Methods("GET")
 	r.Handle("/item/details/byid/{id}", app.validateToken(http.HandlerFunc(app.itemDetailsById))).Methods("GET")
 	r.Handle("/item/update/byid", app.validateToken(http.HandlerFunc(app.updateItemById))).Methods("POST")
+
+	r.Handle("/saleWatches/all", app.validateToken(http.HandlerFunc(app.saleWatches))).Methods("GET")
+	r.Handle("/saleAll/all", app.validateToken(http.HandlerFunc(app.saleAll))).Methods("GET")
+	r.Handle("/saleCloudIDSearch/search", app.validateToken(http.HandlerFunc(app.saleCloudIDSearch))).Methods("GET")
+	r.Handle("/saleChassisSearch/search", app.validateToken(http.HandlerFunc(app.saleChassisSearch))).Methods("GET")
+	r.Handle("/saleInfoSearch/search", app.validateToken(http.HandlerFunc(app.saleInfoSearch))).Methods("GET")
+	r.Handle("/saleCloudIDInfor/details/{id}", app.validateToken(http.HandlerFunc(app.saleCloudIdInformation))).Methods("GET")
+	r.Handle("/cloudIDComments/details/{id}", app.validateToken(http.HandlerFunc(app.SaleCloudIDComments))).Methods("GET")
+	r.Handle("/daterangeall/search", app.validateToken(http.HandlerFunc(app.sysByRangeAll))).Methods("GET")
+
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 
 	r.Handle("/businesspartner/create", app.validateToken(http.HandlerFunc(app.createBusinessPartner))).Methods("POST")
